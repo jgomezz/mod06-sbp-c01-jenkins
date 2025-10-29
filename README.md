@@ -201,11 +201,11 @@ pipeline {
 - Name: docker-pipeline
 - Type: Pipeline
 - Configure:
-    Pipeline → Definition: Pipeline script from SCM
-    SCM: Git
-    Repository URL: https://github.com/jgomezz/mod06-sbp-c01-jenkins.git
-    Branch: */main
-    Script Path: Jenkinsfile
+    - Pipeline → Definition: Pipeline script from SCM
+    - SCM: Git
+    - Repository URL: https://github.com/jgomezz/mod06-sbp-c01-jenkins.git
+    - Branch: */main
+    - Script Path: Jenkinsfile
 - Save
 ```
 ### Step 13: Run Build
