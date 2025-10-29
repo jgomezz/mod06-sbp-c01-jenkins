@@ -107,6 +107,7 @@ git --version
 
 # Exit container
 exit
+```
 
 ### Step 9: Configure Tools in Jenkins
 ```
