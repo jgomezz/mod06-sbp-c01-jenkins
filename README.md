@@ -29,31 +29,25 @@ ssh -i jenkins-key.pem ubuntu@54.123.45.67
 
 ### Step 3: Install Docker 
 
-#### Update system
 ```
+# Update system
 sudo apt update
-```
-#### Install Docker
-```
+
+# Install Docker
 sudo apt install -y docker.io
-```
-#### Start Docker
-```
+
+# Start Docker
 sudo systemctl start docker
 sudo systemctl enable docker
-```
-#### Allow ubuntu user to use Docker (no need for sudo)
-```
-sudo usermod -aG docker ubuntu
-```
-#### Apply group changes
-```
-newgrp docker
-```
-#### Verify Docker works
-```
-docker --version
 
+# Allow ubuntu user to use Docker (no need for sudo)
+sudo usermod -aG docker ubuntu
+
+# Apply group changes
+newgrp docker
+
+# Verify Docker works
+docker --version
 ```
 
 ### Step 4: Run Jenkins Container
