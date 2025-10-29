@@ -107,11 +107,30 @@ git --version
 
 # Exit container
 exit
+
+### Step 9: Configure Tools in Jenkins
 ```
+- Manage Jenkins → Tools
+- JDK:
+    Add JDK
+    Name: Java
+- Maven:
+  Add Maven
+  Name: Maven
+  Uncheck "Install automatically"
+  MAVEN_HOME: /usr/share/maven
+- Git:
+  Should auto-detect
+  Path: /usr/bin/git
+- Save
+```
+
 
 ## PART 4: Create Simple Spring Boot App (Same as Before)
 
-### File 4: Jenkinsfile
+### Step 10: Create Project
+
+#### File 4: Jenkinsfile
 ```
 pipeline {
     agent any
@@ -184,7 +203,7 @@ pipeline {
 - Configure:
     Pipeline → Definition: Pipeline script from SCM
     SCM: Git
-    Repository URL: https://github.com/YOUR-USERNAME/jenkins-docker-lab.git
+    Repository URL: https://github.com/jgomezz/mod06-sbp-c01-jenkins.git
     Branch: */main
     Script Path: Jenkinsfile
 - Save
@@ -198,3 +217,20 @@ pipeline {
 
 ## PART 6: Setup Webhook (Automatic Builds)
 
+### Step 14: GitHub Webhook
+```
+- GitHub repo → Settings → Webhooks → Add webhook
+- Payload URL: http://IP:8080/github-webhook/
+- Content type: application/json
+- Add webhook
+```
+
+### Step 15: Enable in Jenkins
+```
+- Pipeline → Configure
+- Build Triggers:
+    ✅ GitHub hook trigger for GITScm polling
+- Save
+```
+
+### Step 16: Do change, push and build starts automatically!
