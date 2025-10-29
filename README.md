@@ -108,3 +108,93 @@ git --version
 # Exit container
 exit
 ```
+
+## PART 4: Create Simple Spring Boot App (Same as Before)
+
+### File 4: Jenkinsfile
+```
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven'
+        jdk 'Java'
+        // git 'Git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Getting code...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🔨 Building...'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '🧪 Testing...'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo '📦 Creating JAR...'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn package -DskipTests'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Success in Docker!'
+            archiveArtifacts 'user-service/target/*.jar'
+        }
+        failure {
+            echo '❌ Failed!'
+        }
+    }
+}
+```
+
+## PART 5: Push to GitHub & Setup Pipeline
+
+### Step 11: Push to GitHub
+```
+
+```
+### Step 12: Create Pipeline in Jenkins
+```
+- Jenkins → New Item
+- Name: docker-pipeline
+- Type: Pipeline
+- Configure:
+    Pipeline → Definition: Pipeline script from SCM
+    SCM: Git
+    Repository URL: https://github.com/YOUR-USERNAME/jenkins-docker-lab.git
+    Branch: */main
+    Script Path: Jenkinsfile
+- Save
+```
+### Step 13: Run Build
+```
+- Click "Build Now"
+- Click #1 → Console Output
+- Wait for "✅ Success in Docker!"
+```
+
+## PART 6: Setup Webhook (Automatic Builds)
+
