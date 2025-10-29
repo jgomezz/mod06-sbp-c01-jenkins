@@ -125,7 +125,11 @@ exit
   Path: /usr/bin/git
 - Save
 ```
+<img src="images/JDK_installations.png">
 
+<img src="images/Git_installations.png">
+
+<img src="images/Maven_installations.png">
 
 ## PART 4: Create Simple Spring Boot App (Same as Before)
 
@@ -209,6 +213,9 @@ pipeline {
     - Script Path: Jenkinsfile
 - Save
 ```
+<img src="images/Pipeline.png">
+
+
 ### Step 13: Run Build
 ```
 - Click "Build Now"
@@ -225,6 +232,8 @@ pipeline {
 - Content type: application/json
 - Add webhook
 ```
+<img src="images/GitHub_Webhook.png">
+
 
 ### Step 15: Enable in Jenkins
 ```
@@ -233,5 +242,6 @@ pipeline {
     ✅ GitHub hook trigger for GITScm polling
 - Save
 ```
+<img src="images/Pipeline_Webhook.png">
 
 ### Step 16: Do change, push and build starts automatically!
