@@ -4,7 +4,7 @@ pipeline {
     tools {
         maven 'Maven'
         jdk 'Java'
-        git 'Git'
+        // git 'Git'
     }
 
     stages {
@@ -18,21 +18,27 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🔨 Building...'
-                sh 'mvn clean compile'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn clean compile'
+                }
             }
         }
 
         stage('Test') {
             steps {
                 echo '🧪 Testing...'
-                sh 'mvn test'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Package') {
             steps {
                 echo '📦 Creating JAR...'
-                sh 'mvn package -DskipTests'
+                dir('user-service') {  // Change to user-service directory
+                    sh 'mvn package -DskipTests'
+                }
             }
         }
     }
@@ -40,7 +46,7 @@ pipeline {
     post {
         success {
             echo '✅ Success in Docker!'
-            archiveArtifacts 'target/*.jar'
+            archiveArtifacts 'user-service/target/*.jar'
         }
         failure {
             echo '❌ Failed!'
