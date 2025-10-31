@@ -1,0 +1,53 @@
+# ============================================
+# SERVER CONFIGURATION
+# ============================================
+spring:
+  # ============================================
+  # postgresql docker configuration
+  # ============================================
+  # conectar a postgresql en docker (puerto 5432)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/userdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    # ============================================
+    # CONNECTION POOL
+    # ============================================
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+
+
+  # ============================================
+  # JPA CONFIGURATION
+  # ============================================
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    # IMPORTANTE: validate porque Flyway gestiona el schema
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  # ============================================
+  # FLYWAY CONFIGURATION
+  # ============================================
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/dev
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+# ============================================
+# LOGGING
+# ============================================
+logging:
+  level:
+    org.flywaydb: INFO

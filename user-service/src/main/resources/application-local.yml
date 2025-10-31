@@ -1,0 +1,62 @@
+# ============================================
+# SERVER CONFIGURATION
+# ============================================
+spring:
+  # ============================================
+  # H2 DATABASE CONFIGURATION
+  # ============================================
+  datasource:
+    url: jdbc:h2:mem:userdb
+    # OR use file-based database (data persists)
+    # url: jdbc:h2:file:./data/userdb
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
+    # ============================================
+    # CONNECTION POOL
+    # ============================================
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+
+  # H2 Console (accessible at http://localhost:8081/h2-console)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      # IMPORTANT: Allow remote access (required for Docker)
+      # settings:
+      #   web-allow-others: true
+
+  # ============================================
+  # JPA CONFIGURATION
+  # ============================================
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    # IMPORTANTE: validate porque Flyway gestiona el schema
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  # ============================================
+  # FLYWAY CONFIGURATION
+  # ============================================
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/local
+    baseline-on-migrate: true
+    validate-on-migrate: true
+# ============================================
+# LOGGING
+# ============================================
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
