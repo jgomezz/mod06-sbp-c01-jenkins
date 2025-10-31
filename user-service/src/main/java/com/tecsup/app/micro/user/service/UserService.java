@@ -22,14 +22,14 @@ public class UserService {
     private final UserMapper mapper;
 
     public List<User> getAllUsers() {
-        log.info("Fetching all users from PostgreSQL Docker container");
+        log.info("Fetching all users");
         List<UserEntity> entities = userRepository.findAll();
         return this.mapper.toDomain(entities);
     }
 
     public User getUserById(Long id) {
 
-        log.info("Fetching user with id: {} from Docker PostgreSQL", id);
+        log.info("Fetching user with id: {} ", id);
 
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
@@ -41,7 +41,7 @@ public class UserService {
     @Transactional
     public User createUser(User user) {
 
-        log.info("Creating new user in Docker PostgreSQL: {}", user.getEmail());
+        log.info("Creating new user : {}", user.getEmail());
 
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists: " + user.getEmail());
@@ -58,7 +58,7 @@ public class UserService {
 
     @Transactional
     public User updateUser(Long id, User userDetails) {
-        log.info("Updating user with id: {} in Docker PostgreSQL", id);
+        log.info("Updating user with id: {}", id);
         User user = getUserById(id);
         UserEntity entityUser = mapper.toEntity(user);
         UserEntity entityUserUpdate = userRepository.save(entityUser);
@@ -68,7 +68,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long id) {
-        log.info("Deleting user with id: {} from Docker PostgreSQL", id);
+        log.info("Deleting user with id: {}", id);
         User user = getUserById(id);
         UserEntity entityUser = mapper.toEntity(user);
         UserEntity ue = new UserEntity();
