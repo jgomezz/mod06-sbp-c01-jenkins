@@ -270,3 +270,12 @@ _
 
 <img src="images/Jenkins_add_credential.png">
 
+- Configure:
+  - Kind: Username with password
+  - Username: your-github-username
+  - Password: your-github-personal-access-token
+  - ID: github-credentials
+  - Description: GitHub Access Token
+- Click: "Create"
+
+<img src="images/Jenkins_create_credential.png">
