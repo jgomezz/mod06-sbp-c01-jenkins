@@ -254,7 +254,13 @@ _
 
 ### Step 1: Create GitHub Personal Access Token:
 - Go to: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
-
+- Click "Generate new token (classic)"
+- Name: Jenkins 
+- Select scopes:
+  - ✅ repo (all)
+  - ✅ admin:repo_hook
+- Click "Generate token"
+- Copy the token (you won't see it again!)
 <img src="images/GitHub_Token.png">
 
 ### Step 2: Add GitHub Credentials
