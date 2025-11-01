@@ -250,3 +250,15 @@ _
 
 # Chapter II : Advanced CI/CD 
 
+
+
+### Step 1: Create GitHub Personal Access Token:
+- Go to: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+
+<img src="images/GitHub_Token.png">
+
+### Step 2: Add GitHub Credentials
+
+- Go to: Manage Jenkins → Credentials → System → Global credentials → Add Credentials
+
+
