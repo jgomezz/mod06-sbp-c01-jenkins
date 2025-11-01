@@ -279,3 +279,9 @@ _
 - Click: "Create"
 
 <img src="images/Jenkins_create_credential.png">
+
+
+
+### Step 3: Add GitHub Credentials to Pipeline
+
+<img src="images/Pipeline_add_GitHub_credential.png">
