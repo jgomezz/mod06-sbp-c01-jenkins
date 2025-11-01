@@ -9,6 +9,11 @@ COPY target/*.jar user-service.jar
 
 # Expose the port your application uses (change 8080 if needed)
 EXPOSE 8081
+
+# Define profile
+ENV SPRING_PROFILES_ACTIVE=dev
+
+#
 ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
 # Run the application
