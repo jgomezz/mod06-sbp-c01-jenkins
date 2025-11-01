@@ -282,6 +282,6 @@ _
 
 
 
-### Step 3: Add GitHub Credentials to Pipeline
+### Step 3: Add GitHub Credential to Pipeline
 
 <img src="images/Pipeline_add_GitHub_credential.png">
