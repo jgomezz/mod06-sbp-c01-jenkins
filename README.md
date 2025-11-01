@@ -1,3 +1,4 @@
+# Chapter I : Basic CI/CD
 
 ## PART 1: Launch EC2 Instance
 
@@ -215,7 +216,6 @@ pipeline {
 ```
 <img src="images/Pipeline.png">
 
-
 ### Step 13: Run Build
 ```
 - Click "Build Now"
@@ -245,3 +245,8 @@ pipeline {
 <img src="images/Pipeline_Webhook.png">
 
 ### Step 16: Do change, push and build starts automatically!
+
+_
+
+# Chapter II : Advanced CI/CD 
+
