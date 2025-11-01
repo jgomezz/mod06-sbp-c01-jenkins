@@ -261,10 +261,12 @@ _
   - ✅ admin:repo_hook
 - Click "Generate token"
 - Copy the token (you won't see it again!)
+
 <img src="images/GitHub_Token.png">
 
 ### Step 2: Add GitHub Credentials
 
 - Go to: Manage Jenkins → Credentials → System → Global credentials → Add Credentials
 
+<img src="images/Jenkins_add_credential.png">
 
