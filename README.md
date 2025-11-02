@@ -303,4 +303,45 @@ _
         DB_USERNAME = credentials('db-username')
         DB_PASSWORD = credentials('db-password')
     }
+    .
+    .
+    .
+    stage('Docker Build') {
+        steps {
+            echo '🐳 Building Docker image...'
+            dir('user-service') {
+                script {
+                    sh """
+                        docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                        # docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+                    """
+                }
+            }
+        }
+    }
+```
+
+### Step 3: Docker Socket Mounting
+
+```declarative
+    # Stop Jenkins
+    docker stop jenkins
+
+    # REMOVE the old container (can't add volumes to existing container!)
+    docker rm jenkins
+
+    # Start with Docker socket mounted
+    docker run -d \
+        --name jenkins \
+        -p 8080:8080 \
+        -p 50000:50000 \
+        -v jenkins_home:/var/jenkins_home \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v /usr/bin/docker:/usr/bin/docker \
+        --restart unless-stopped \
+        jenkins/jenkins:lts-jdk17
+
+    # Fix permissions
+    docker exec -u root jenkins chmod 666 /var/run/docker.sock
+
 ```
