@@ -248,9 +248,7 @@ pipeline {
 
 _
 
-# Chapter II : Advanced CI/CD 
-
-
+# Chapter II : GitHub Credentials in Jenkins
 
 ### Step 1: Create GitHub Personal Access Token:
 - Go to: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
@@ -280,8 +278,29 @@ _
 
 <img src="images/Jenkins_create_credential.png">
 
-
-
 ### Step 3: Add GitHub Credential to Pipeline
 
 <img src="images/Pipeline_add_GitHub_credential.png">
+
+
+# Chapter III : Hide Credentials in Jenkins Pipeline
+
+### Step 1: Setting Variables in Jenkins Pipeline
+
+- Create credentials in Jenkins:
+  - Manage Jenkins → Manage Credentials 
+  - Add three "Secret text" credentials:
+    - ID: db-url, Secret: jdbc:postgresql://postgres-user:5432/userdb
+    - ID: db-username, Secret: postgres
+    - ID: db-password, Secret: postgres
+
+### Step 2: Update Jenkinsfile to Use Credentials
+
+```
+    environment {
+        // Database credentials from Jenkins
+        DB_URL = credentials('db-url')
+        DB_USERNAME = credentials('db-username')
+        DB_PASSWORD = credentials('db-password')
+    }
+```
