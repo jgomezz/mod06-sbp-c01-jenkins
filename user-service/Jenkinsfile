@@ -66,6 +66,18 @@ pipeline {
             }
         }
 
+        stage('Docker Compose Stop') {
+            steps {
+                echo '🛑 Stopping  containers on HOST...'
+                script {
+                    sh """
+                        docker compose down
+                    """
+                }
+            }
+        }
+
+
     }
 
     post {
