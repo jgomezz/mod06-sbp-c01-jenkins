@@ -345,3 +345,13 @@ _
     docker exec -u root jenkins chmod 666 /var/run/docker.sock
 
 ```
+```declarative
+docker exec -u root -it jenkins bash
+
+# Update package list
+apt-get update
+
+# Install Maven
+apt-get install -y maven
+
+```
