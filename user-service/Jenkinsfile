@@ -95,7 +95,6 @@ pipeline {
     post {
         success {
             echo '✅ Success! Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}'
-            archiveArtifacts 'user-service/target/*.jar'
         }
         failure {
             echo '❌ Failed!'
