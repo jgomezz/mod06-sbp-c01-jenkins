@@ -71,7 +71,7 @@ pipeline {
                 echo '🛑 Stopping  containers on HOST...'
                 script {
                     sh """
-                        docker compose down || true
+                        docker compose down
                     """
                 }
             }

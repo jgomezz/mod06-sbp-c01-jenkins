@@ -373,3 +373,41 @@ sudo apt update
 # 4. Install ONLY Docker Compose plugin
 sudo apt install docker-compose-plugin -y
 ```
+
+--
+
+# Chapter IV : Installation Jenkins Server on Ubuntu 22.04
+
+```declarative
+# Update system packages
+sudo apt update
+sudo apt upgrade -y
+
+# Install Java
+sudo apt install fontconfig openjdk-17-jre -y
+
+# Verify Java installation
+java -version
+
+# Add Jenkins repository key
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+# Add Jenkins repository
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update package list and install Jenkins
+sudo apt update
+sudo apt install jenkins -y
+
+# Start Jenkins service
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+# Check Jenkins status
+sudo systemctl status jenkins
+
+
+```
