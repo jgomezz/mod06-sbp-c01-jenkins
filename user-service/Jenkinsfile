@@ -84,6 +84,11 @@ pipeline {
                 echo '🔄 Restarting containers...'
                 script {
                     sh """
+                        export SPRING_PROFILE=dev
+                        export DB_URL='${DB_URL}'
+                        export DB_USERNAME='${DB_USERNAME}'
+                        export DB_PASSWORD='${DB_PASSWORD}'
+
                         docker compose down
                         docker compose up -d
                     """
