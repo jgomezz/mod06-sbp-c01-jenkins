@@ -60,19 +60,32 @@ pipeline {
                     script {
                         sh """
                             docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
-                            # docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+                            docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+
                         """
                     }
                 }
             }
         }
 
-        stage('Docker Compose Stop') {
+        stage('Docker Cleanup') {
             steps {
-                echo '🛑 Stopping  containers on HOST...'
+                echo '🧹 Cleaning up old images...'
+                script {
+                    // Remove dangling images
+                    sh 'docker image prune -f'
+                }
+            }
+        }
+
+
+        stage('Docker Compose Stop & Start') {
+            steps {
+                echo '🔄 Restarting containers...'
                 script {
                     sh """
                         docker compose down
+                        docker compose up -d
                     """
                 }
             }
@@ -81,11 +94,15 @@ pipeline {
 
     post {
         success {
-            echo '✅ Success in Docker!'
+            echo '✅ Success! Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}'
             archiveArtifacts 'user-service/target/*.jar'
         }
         failure {
             echo '❌ Failed!'
+        }
+        always {
+            // Optional: Clean workspace
+            cleanWs()
         }
     }
 }

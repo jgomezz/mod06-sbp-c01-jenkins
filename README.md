@@ -33,6 +33,8 @@ ssh -i jenkins-key.pem ubuntu@54.123.45.67
 ```
 # Update system
 sudo apt update
+sudo apt upgrade -y
+
 
 # Install Docker
 sudo apt install -y docker.io
@@ -51,23 +53,71 @@ newgrp docker
 docker --version
 ```
 
-### Step 4: Run Jenkins Container
+### Step 5: Install  Docker Compose Plugin in EC2
 ```
-docker run -d \
-  --name jenkins \
-  -p 8080:8080 \
-  -p 50000:50000 \
-  -v jenkins_home:/var/jenkins_home \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  --restart unless-stopped \
-  jenkins/jenkins:lts-jdk17
+# 1. Add Docker's GPG key
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# 2. Add Docker repository (to get docker-compose-plugin)
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 3. Update package list
+sudo apt update
+
+# 4. Install ONLY Docker Compose plugin
+sudo apt install docker-compose-plugin -y
+```
+
+
+## PART 3: Install Java, Maven & Git
+
+### Step 8: 
+```
+# Install Java
+sudo apt install fontconfig openjdk-17-jre -y
+
+# Install Maven
+sudo apt-get install -y maven
+
+# Install Git
+sudo apt-get install -y git
+
+# Verify installations
+mvn -version
+git --version
+
+```
+
+### Step 4: Install Jenkins
+```
+# Add Jenkins repository key
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+# Add Jenkins repository
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update package list and install Jenkins
+sudo apt update
+sudo apt install jenkins -y
+
+# Start Jenkins service
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+# Check Jenkins status
+sudo systemctl status jenkins
 ```
 
 ### Step 5: Get Jenkins Password
 
 #### Get initial password
 ```
-docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+suco cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
 ### Step 6: Open Jenkins
@@ -84,31 +134,6 @@ http://54.123.45.67:8080
 - Start using Jenkins
 ```
 
-## PART 3: Install Maven & Git in Jenkins Container
-
-### Step 7: Access Jenkins Container
-```
-docker exec -u root -it jenkins bash
-```
-
-### Step 8: Install Tools Inside Container
-```
-# Update package list
-apt-get update
-
-# Install Maven
-apt-get install -y maven
-
-# Install Git
-apt-get install -y git
-
-# Verify installations
-mvn -version
-git --version
-
-# Exit container
-exit
-```
 
 ### Step 9: Configure Tools in Jenkins
 ```
@@ -319,95 +344,4 @@ _
             }
         }
     }
-```
-
-### Step 3: Docker Socket Mounting
-
-```declarative
-    # Stop Jenkins
-    docker stop jenkins
-
-    # REMOVE the old container (can't add volumes to existing container!)
-    docker rm jenkins
-
-    # Start with Docker socket mounted
-    docker run -d \
-        --name jenkins \
-        -p 8080:8080 \
-        -p 50000:50000 \
-        -v jenkins_home:/var/jenkins_home \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v /usr/bin/docker:/usr/bin/docker \
-        --restart unless-stopped \
-        jenkins/jenkins:lts-jdk17
-
-    # Fix permissions
-    docker exec -u root jenkins chmod 666 /var/run/docker.sock
-
-```
-### Step 4: Install Maven in Jenkins Container
-```declarative
-docker exec -u root -it jenkins bash
-
-# Update package list
-apt-get update
-
-# Install Maven
-apt-get install -y maven
-
-```
-
-### Step 5: Install ONLY Docker Compose Plugin in EC2
-```
-# 1. Add Docker's GPG key
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# 2. Add Docker repository (to get docker-compose-plugin)
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# 3. Update package list
-sudo apt update
-
-# 4. Install ONLY Docker Compose plugin
-sudo apt install docker-compose-plugin -y
-```
-
---
-
-# Chapter IV : Installation Jenkins Server on Ubuntu 22.04
-
-```declarative
-# Update system packages
-sudo apt update
-sudo apt upgrade -y
-
-# Install Java
-sudo apt install fontconfig openjdk-17-jre -y
-
-# Verify Java installation
-java -version
-
-# Add Jenkins repository key
-sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
-  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-
-# Add Jenkins repository
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-
-# Update package list and install Jenkins
-sudo apt update
-sudo apt install jenkins -y
-
-# Start Jenkins service
-sudo systemctl start jenkins
-sudo systemctl enable jenkins
-
-# Check Jenkins status
-sudo systemctl status jenkins
-
-
 ```
