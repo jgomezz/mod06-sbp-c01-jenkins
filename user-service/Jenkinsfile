@@ -12,6 +12,9 @@ pipeline {
         DOCKER_IMAGE = 'user-service'
         DOCKER_TAG = '1.0' //   "${BUILD_NUMBER}"
 
+        // Spring Profile
+        SPRING_PROFILE = 'dev'
+
         // Database credentials from Jenkins
         DB_URL = credentials('db-url')
         DB_USERNAME = credentials('db-username')
@@ -84,13 +87,29 @@ pipeline {
                 echo '🔄 Restarting containers...'
                 script {
                     sh """
-                        export SPRING_PROFILE=dev
+                        export SPRING_PROFILE=${SPRING_PROFILE}
                         export DB_URL='${DB_URL}'
                         export DB_USERNAME='${DB_USERNAME}'
                         export DB_PASSWORD='${DB_PASSWORD}'
 
-                        docker compose down
-                        docker compose up -d
+                        # docker compose down          # Stops EVERYTHING including database
+                        # docker compose up -d         # Restarts EVERYTHING
+
+                        # Stop ONLY user-service (database keeps running)
+                        docker compose stop user-service
+
+                        # Remove ONLY user-service container
+                        docker compose rm -f user-service
+
+                        # Start ONLY user-service (database untouched)
+                        docker compose up -d user-service
+
+                        echo "⏳ Waiting for user-service to start..."
+                        sleep 15
+
+                        echo "📊 Service Status:"
+                        docker compose ps
+
                     """
                 }
             }
