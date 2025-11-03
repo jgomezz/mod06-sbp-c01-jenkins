@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        # Test
+        // Test
         DOCKER_IMAGE = 'user-service'
         DOCKER_TAG = '1.0' //   "${BUILD_NUMBER}"
 
