@@ -2,10 +2,9 @@ package com.tecsup.app.micro.user.service;
 
 import com.tecsup.app.micro.user.entity.UserEntity;
 import com.tecsup.app.micro.user.mapper.UserMapper;
-import com.tecsup.app.micro.user.model.User;
+import com.tecsup.app.micro.user.dto.UserDto;
 import com.tecsup.app.micro.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,13 +20,13 @@ public class UserService {
 
     private final UserMapper mapper;
 
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         log.info("Fetching all users");
         List<UserEntity> entities = userRepository.findAll();
         return this.mapper.toDomain(entities);
     }
 
-    public User getUserById(Long id) {
+    public UserDto getUserById(Long id) {
 
         log.info("Fetching user with id: {} ", id);
 
@@ -39,7 +38,7 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(User user) {
+    public UserDto createUser(UserDto user) {
 
         log.info("Creating new user : {}", user.getEmail());
 
@@ -49,7 +48,7 @@ public class UserService {
 
         UserEntity userEntity = mapper.toEntity(user);
         UserEntity savedEntity = userRepository.save(userEntity);
-        User savedUser = mapper.toDomain(savedEntity);
+        UserDto savedUser = mapper.toDomain(savedEntity);
 
         log.info("Saved user via Spring Data: {}", savedUser);
 
@@ -57,9 +56,9 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(Long id, User userDetails) {
+    public UserDto updateUser(Long id, UserDto userDetails) {
         log.info("Updating user with id: {}", id);
-        User user = getUserById(id);
+        UserDto user = getUserById(id);
         UserEntity entityUser = mapper.toEntity(user);
         UserEntity entityUserUpdate = userRepository.save(entityUser);
         return mapper.toDomain(entityUserUpdate);
@@ -69,7 +68,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         log.info("Deleting user with id: {}", id);
-        User user = getUserById(id);
+        UserDto user = getUserById(id);
         UserEntity entityUser = mapper.toEntity(user);
         UserEntity ue = new UserEntity();
         userRepository.delete(ue);

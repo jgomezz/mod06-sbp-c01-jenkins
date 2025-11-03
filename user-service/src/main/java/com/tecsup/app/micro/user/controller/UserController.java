@@ -1,6 +1,6 @@
 package com.tecsup.app.micro.user.controller;
 
-import com.tecsup.app.micro.user.model.User;
+import com.tecsup.app.micro.user.dto.UserDto;
 import com.tecsup.app.micro.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,26 +22,26 @@ public class UserController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         log.info("REST request to get all users");
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         log.info("REST request to get user by id: {}", id);
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
         log.info("REST request to create user: {}", user);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.createUser(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user) {
         log.info("REST request to update user with id: {}", id);
         return ResponseEntity.ok(userService.updateUser(id, user));
     }

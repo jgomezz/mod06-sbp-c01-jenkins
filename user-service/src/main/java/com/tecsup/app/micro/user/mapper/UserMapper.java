@@ -1,7 +1,7 @@
 package com.tecsup.app.micro.user.mapper;
 
 import com.tecsup.app.micro.user.entity.UserEntity;
-import com.tecsup.app.micro.user.model.User;
+import com.tecsup.app.micro.user.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,10 +12,10 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    User toDomain(UserEntity entity);
+    UserDto toDomain(UserEntity entity);
 
-    UserEntity toEntity(User domain);
+    UserEntity toEntity(UserDto domain);
 
-    List<User> toDomain(List<UserEntity> entities);
+    List<UserDto> toDomain(List<UserEntity> entities);
 
 }
