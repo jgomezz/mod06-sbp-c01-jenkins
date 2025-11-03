@@ -89,8 +89,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
     depends_on:
-      config-server:
-        condition: service_healthy
       postgres-product:
         condition: service_healthy
     networks:
